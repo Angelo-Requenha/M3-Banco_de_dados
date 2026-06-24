@@ -1,5 +1,5 @@
-from src.view.functions_menu import FunctionsMenu
-import os
+from src.views.functions_menu import FunctionsMenu
+from os import system, name
 
 class OptionsMenu:
     def __init__(self, functions_menu: FunctionsMenu):
@@ -7,29 +7,34 @@ class OptionsMenu:
 
     def display_login_options(self):
         while True:
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print("\n" + "=" * 50)
-            print("📺 SISTEMA DE STREAMING".center(50))
-            print("=" * 50)
-            print(" 1 │ 👤 Criar Usuário")
-            print(" 2 │ 👤 Acessar um usuario")
-            print(" 3 │ 🚪 Sair")
-            print("=" * 50)
+            system('cls' if name == 'nt' else 'clear')
+            title ="📺 SISTEMA DE STREAMING".center(50)
+            options = [
+            " 1 │ 👤 Criar Usuário",
+            " 2 │ 👤 Acessar um usuario",
+            " 3 │ 🚪 Sair",
+            ]
 
-            choice = input("➜ Escolha uma opção: ")
+            choice = self.functions_menu.menu_setas(options, title)
 
             match choice:
-                case "1":
+                case 0:
                     self.functions_menu.crate_user()
-                case "2":
+                case 1:
                     user = self.functions_menu.login_user()
                     if user != "Erro ao fazer login. Verifique suas credenciais.":
                         if user.name == "admin":
-                            return (True, user)
-                        return (False, user)
+                            login = (True, user)
+                        else:
+                            login = (False, user)
+
+                        if login[0] == True:
+                            self.admin_menu(login[1])
+                        else:
+                            self.user_menu(login[1])
                     else:
                         print(f"\n❌ {user}")
-                case "3":
+                case 2:
                     print("\n👋 Encerrando sistema...")
                     break
                 case _:
@@ -37,32 +42,34 @@ class OptionsMenu:
 
     def user_menu(self, user):
         while True:
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print("\n" + "=" * 50)
-            print(f"📺 SISTEMA DE STREAMING - Usuário: {user.name}".center(50))
-            print("=" * 50)
-            print(" 1 │ 📋 Listar Todos os videos")
-            print(" 2 │ ⚙️  Configurações")
-            print(" 3 │ 🚪 Sair")
-            print("=" * 50)
+            system('cls' if name == 'nt' else 'clear')
+            title = f"📺 SISTEMA DE STREAMING - Usuário: {user.name}".center(50)
+            options = [
+            " 1 │ 📋 Listar Todos os videos",
+            " 2 │ ⚙️  Configurações",
+            " 3 │ 🚪 Sair"
+            ]
 
-            choice = input("➜ Escolha uma opção: ")
+            choice = self.functions_menu.menu_setas(options, title)
 
             match choice:
-                case "1":
+                case 0:
                     self.functions_menu.interactive_menu(
                         self.functions_menu.list_all_videos(),
                         title="VÍDEOS",
                         icon="🎥",
                         formatter=lambda video: print(
+                            f"🆔 ID         : {video.id}\n"
                             f"🎬 Título     : {video.title}\n"
                             f"📝 Descrição  : {video.description}\n"
                             f"📅 Criado em  : {video.created_at}"
                         )
                     )
-                case "2":
+                    video_id = input("escolha um video para assistir: ")
+                    input("Pressione enter para continuar...")
+                case 1:
                     self.config_user_menu(user)
-                case "3":
+                case 2:
                     print("\n👋 Encerrando sistema...")
                     break
                 case _:
@@ -70,24 +77,23 @@ class OptionsMenu:
     
     def config_user_menu(self, user):
         while True:
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print("\n" + "=" * 50)
-            print(f"⚙️ CONFIGURAÇÕES - Usuário: {user.name}".center(50))
-            print("=" * 50)
-            print(" 1 │ 🔑 Alterar Senha")
-            print(" 2 │ 🗑️  Excluir Usuário")
-            print(" 3 │ 🚪 Sair")
-            print("=" * 50)
+            system('cls' if name == 'nt' else 'clear')
+            title = f"⚙️ CONFIGURAÇÕES - Usuário: {user.name}".center(50)
+            options = [
+                " 1 │ 🔑 Alterar Senha",
+                " 2 │ 🗑️  Excluir Usuário",
+                " 3 │ 🚪 Sair"
+            ]
 
-            choice = input("➜ Escolha uma opção: ")
+            choice = self.functions_menu.menu_setas(options, title)
 
             match choice:
-                case "1":
+                case 0:
                     self.functions_menu.change_password(user.id)
-                case "2":
+                case 1:
                     self.functions_menu.delete_user(user.id)
                     break
-                case "3":
+                case 2:
                     print("\n👋 Encerrando sistema...")
                     break
                 case _:
@@ -95,13 +101,13 @@ class OptionsMenu:
 
     def admin_menu(self, user):
         while True:
-            os.system('cls' if os.name == 'nt' else 'clear')
+            system('cls' if name == 'nt' else 'clear')
             title = f"⚙️ ADMIN - Usuário: {user.name}".center(50)
             options = [
                 "│ 📋 Listar Todos os usuários",
-                "│ 🗑️ Excluir Usuário",
+                "│ 🗑️  Excluir Usuário",
                 "│ 🎥 Criar Vídeo",
-                "│ 🗑️ Criar Vídeo",
+                "│ 🗑️  Criar Vídeo",
                 "│ 🚪 Sair"
             ]
 

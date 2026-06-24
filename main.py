@@ -2,9 +2,9 @@ from create_db.create_db import create_db
 from src.services.video_service import VideoService
 from src.services.user_service import UserService
 from src.services.history_service import HistoryService
-from src.view.menu import Menu
-from src.view.options_menu import OptionsMenu
-from src.view.functions_menu import FunctionsMenu
+from src.views.menu import Menu
+from src.views.options_menu import OptionsMenu
+from src.views.functions_menu import FunctionsMenu
 
 if __name__ == "__main__":
     try:
