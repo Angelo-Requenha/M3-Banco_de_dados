@@ -1,5 +1,6 @@
 import os
-import msvcrt
+import readchar  # leitura de teclas multiplataforma (substitui o msvcrt, que só existe no Windows)
+from readchar import key
 
 from src.services.user_service import UserService
 from src.services.video_service import VideoService
@@ -89,13 +90,11 @@ class FunctionsMenu:
                 print(f"{prefixo}{opcao}")
             print("=" * 50)
 
-            tecla = msvcrt.getch()
+            tecla = readchar.readkey()
 
-            if tecla == b'\xe0':
-                tecla = msvcrt.getch()
-                if tecla == b'H': # Seta para cima
-                    selecionado = (selecionado - 1) % len(opcoes)
-                elif tecla == b'P': # Seta para baixo
-                    selecionado = (selecionado + 1) % len(opcoes)
-            elif tecla == b'\r': # Enter
+            if tecla == key.UP: # Seta para cima
+                selecionado = (selecionado - 1) % len(opcoes)
+            elif tecla == key.DOWN: # Seta para baixo
+                selecionado = (selecionado + 1) % len(opcoes)
+            elif tecla == key.ENTER: # Enter
                 return selecionado
