@@ -26,3 +26,59 @@ CREATE TABLE IF NOT EXISTS history (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (video_id) REFERENCES videos(id)
 );
+
+CREATE TABLE IF NOT EXISTS log_usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    acao VARCHAR(50),
+    data_evento DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS log_videos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    video_id INT,
+    acao VARCHAR(50),
+    data_evento DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- ==============================================================================================
+
+
+DELIMITER //
+
+CREATE TRIGGER trg_usuario_criado
+AFTER INSERT
+ON users
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_usuarios (
+        usuario_id,
+        acao
+    )
+    VALUES (
+        NEW.id,
+        'USUARIO_CRIADO'
+    );
+END//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER trg_video_criado
+AFTER INSERT
+ON videos
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_videos (
+        videos_id,
+        acao
+    )
+    VALUES (
+        NEW.id,
+        'VIDEO_CRIADO'
+    );
+END//
+
+DELIMITER ;
