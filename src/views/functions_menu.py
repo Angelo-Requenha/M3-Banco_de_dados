@@ -4,13 +4,15 @@ from readchar import key
 
 from src.services.user_service import UserService
 from src.services.video_service import VideoService
-from src.services.history_service import HistoryService 
+from src.services.history_service import HistoryService
+from src.services.audit_service import AuditService
 
 class FunctionsMenu:
-    def __init__(self, user_service: UserService, video_service: VideoService, history_service: HistoryService):
+    def __init__(self, user_service: UserService, video_service: VideoService, history_service: HistoryService, audit_service: AuditService):
         self.user_service = user_service
         self.video_service = video_service
         self.history_service = history_service
+        self.audit_service = audit_service
 
     def crate_user(self):
         name = input("Digite o nome do usuário: ")
@@ -58,7 +60,34 @@ class FunctionsMenu:
             return users
         else:
             return "Nenhum usuário encontrado."
-        
+
+    def list_audit(self):
+        audit = self.audit_service.get_all_audit()
+        if audit:
+            return audit
+        else:
+            return "Nenhum registro de auditoria encontrado."
+
+    def audit_report(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        report = self.audit_service.get_audit_report()
+
+        print("\n" + "=" * 50)
+        print("📊 RELATÓRIO DE AUDITORIA".center(50))
+        print("=" * 50)
+
+        if not report:
+            print("📭 Nenhum dado de auditoria disponível.")
+        else:
+            total = 0
+            for row in report:
+                print(f"{row['tipo']:<10}│ {row['acao']:<20}│ {row['total']}")
+                total += row['total']
+            print("-" * 50)
+            print(f"{'TOTAL':<10}│ {'':<20}│ {total}")
+
+        print("=" * 50)
+
     def interactive_menu(self, items, title: str, icon: str, formatter):
         os.system('cls' if os.name == 'nt' else 'clear')
 

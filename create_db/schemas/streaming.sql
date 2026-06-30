@@ -42,8 +42,13 @@ CREATE TABLE IF NOT EXISTS log_videos (
 );
 
 
--- ==============================================================================================
+-- Auditoria: os triggers populam as tabelas de log e a view unifica tudo para leitura/relatório
 
+
+DROP TRIGGER IF EXISTS trg_usuario_criado;
+DROP TRIGGER IF EXISTS trg_usuario_deletado;
+DROP TRIGGER IF EXISTS trg_video_criado;
+DROP TRIGGER IF EXISTS trg_video_deletado;
 
 DELIMITER //
 
@@ -62,9 +67,20 @@ BEGIN
     );
 END//
 
-DELIMITER ;
-
-DELIMITER //
+CREATE TRIGGER trg_usuario_deletado
+AFTER DELETE
+ON users
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_usuarios (
+        usuario_id,
+        acao
+    )
+    VALUES (
+        OLD.id,
+        'USUARIO_DELETADO'
+    );
+END//
 
 CREATE TRIGGER trg_video_criado
 AFTER INSERT
@@ -72,7 +88,7 @@ ON videos
 FOR EACH ROW
 BEGIN
     INSERT INTO log_videos (
-        videos_id,
+        video_id,
         acao
     )
     VALUES (
@@ -81,4 +97,27 @@ BEGIN
     );
 END//
 
+CREATE TRIGGER trg_video_deletado
+AFTER DELETE
+ON videos
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_videos (
+        video_id,
+        acao
+    )
+    VALUES (
+        OLD.id,
+        'VIDEO_DELETADO'
+    );
+END//
+
 DELIMITER ;
+
+
+CREATE OR REPLACE VIEW vw_auditoria AS
+SELECT 'USUARIO' AS tipo, usuario_id AS referencia_id, acao, data_evento
+FROM log_usuarios
+UNION ALL
+SELECT 'VIDEO' AS tipo, video_id AS referencia_id, acao, data_evento
+FROM log_videos;

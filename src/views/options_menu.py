@@ -107,6 +107,8 @@ class OptionsMenu:
                 "│ 📋 Listar Todos os usuários",
                 "│ 🎥 Criar Vídeo",
                 "│ 🗑️  Excluir Vídeo",
+                "│ 📜 Ver Auditoria",
+                "│ 📊 Relatório de Auditoria",
                 "│ 🚪 Sair"
             ]
 
@@ -134,6 +136,22 @@ class OptionsMenu:
                 case 2:
                     self.functions_menu.delete_video()
                 case 3:
+                    self.functions_menu.interactive_menu(
+                        self.functions_menu.list_audit(),
+                        title="AUDITORIAS",
+                        icon="📜",
+                        formatter=lambda registro: print(
+                            f"📌 Tipo       : {registro.tipo}\n"
+                            f"🆔 Referência : {registro.referencia_id}\n"
+                            f"⚡ Ação       : {registro.acao}\n"
+                            f"📅 Data       : {registro.data_evento}"
+                        )
+                    )
+                    input("Pressione enter para continuar...")
+                case 4:
+                    self.functions_menu.audit_report()
+                    input("Pressione enter para continuar...")
+                case 5:
                     print("\n👋 Encerrando sistema...")
                     break
                 case _:
