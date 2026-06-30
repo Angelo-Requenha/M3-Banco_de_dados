@@ -105,9 +105,8 @@ class OptionsMenu:
             title = f"⚙️ ADMIN - Usuário: {user.name}".center(50)
             options = [
                 "│ 📋 Listar Todos os usuários",
-                "│ 🗑️  Excluir Usuário",
                 "│ 🎥 Criar Vídeo",
-                "│ 🗑️  Criar Vídeo",
+                "│ 🗑️  Excluir Vídeo",
                 "│ 🚪 Sair"
             ]
 
@@ -133,10 +132,8 @@ class OptionsMenu:
                 case 1:
                     self.functions_menu.delete_user_by_admin()
                 case 2:
-                    self.functions_menu.create_video()
-                case 3:
                     self.functions_menu.delete_video()
-                case 4:
+                case 3:
                     print("\n👋 Encerrando sistema...")
                     break
                 case _:
