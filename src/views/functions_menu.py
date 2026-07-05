@@ -47,6 +47,18 @@ class FunctionsMenu:
         video_id = int(input("Digite o ID do vídeo a ser excluído: "))
         self.video_service.delete_video_by_id(video_id)
 
+    def delete_history(self):
+        history_id = int(input("Digite o ID do histórico a ser excluído: "))
+        self.history_service.delete_history_by_id(history_id)
+
+    def watch_video(self, user_id):
+        video_id = input("escolha um video para assistir: ")
+        try:
+            self.history_service.create_history(user_id, int(video_id))
+            print("\n✅ Vídeo adicionado ao histórico!")
+        except ValueError:
+            print("\n❌ ID inválido.")
+
     def list_all_videos(self):
         videos = self.video_service.get_all_videos()
         if videos:

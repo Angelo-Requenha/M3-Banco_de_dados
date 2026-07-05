@@ -5,10 +5,10 @@ class HistoryRepository:
     def __init__(self):
         self.connection = connect_db()
 
-    def create_history(self, history: History):
+    def create_history(self, user_id: int, video_id: int):
         cursor = self.connection.cursor()
         query = "INSERT INTO history (user_id, video_id) VALUES (%s, %s)"
-        cursor.execute(query, (history.user_id, history.video_id))
+        cursor.execute(query, (user_id, video_id))
         self.connection.commit()
         cursor.close()
 

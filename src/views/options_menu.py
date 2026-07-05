@@ -65,7 +65,7 @@ class OptionsMenu:
                             f"📅 Criado em  : {video.created_at}"
                         )
                     )
-                    video_id = input("escolha um video para assistir: ")
+                    self.functions_menu.watch_video(user.id)
                     input("Pressione enter para continuar...")
                 case 1:
                     self.config_user_menu(user)
@@ -107,6 +107,7 @@ class OptionsMenu:
                 "│ 📋 Listar Todos os usuários",
                 "│ 🎥 Criar Vídeo",
                 "│ 🗑️  Excluir Vídeo",
+                "│ 🗑️  Excluir Histórico",
                 "│ 📜 Ver Auditoria",
                 "│ 📊 Relatório de Auditoria",
                 "│ 🚪 Sair"
@@ -136,6 +137,9 @@ class OptionsMenu:
                 case 2:
                     self.functions_menu.delete_video()
                 case 3:
+                    self.functions_menu.delete_history()
+                    input("Pressione enter para continuar...")
+                case 4:
                     self.functions_menu.interactive_menu(
                         self.functions_menu.list_audit(),
                         title="AUDITORIAS",
@@ -148,10 +152,10 @@ class OptionsMenu:
                         )
                     )
                     input("Pressione enter para continuar...")
-                case 4:
+                case 5:
                     self.functions_menu.audit_report()
                     input("Pressione enter para continuar...")
-                case 5:
+                case 6:
                     print("\n👋 Encerrando sistema...")
                     break
                 case _:
