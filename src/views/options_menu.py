@@ -133,7 +133,8 @@ class OptionsMenu:
 
                     input("Pressione enter para continuar...")
                 case 1:
-                    self.functions_menu.delete_user_by_admin()
+                    self.functions_menu.create_video()
+                    input("Pressione enter para continuar...")
                 case 2:
                     self.functions_menu.delete_video()
                 case 3:

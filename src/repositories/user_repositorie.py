@@ -14,18 +14,18 @@ class UserRepository:
 
     def get_user_by_id(self, user_id: int) -> User:
         cursor = self.connection.cursor()
-        query = "SELECT id, username, email, password FROM users WHERE id = %s"
+        query = "SELECT id, username, email, password, created_at FROM users WHERE id = %s"
         cursor.execute(query, (user_id,))
         result = cursor.fetchone()
         cursor.close()
         if result:
-            return User(id=result[0], name=result[1], email=result[2], password=result[3])
+            return User(id=result[0], name=result[1], email=result[2], password=result[3], created_at=result[4])
         return None
     
     def delete_user_by_id(self, user_id: int):
         cursor = self.connection.cursor()
-        query = "DELETE FROM users WHERE id = %s"
-        cursor.execute(query, (user_id,))
+        cursor.execute("DELETE FROM history WHERE user_id = %s", (user_id,))
+        cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
         self.connection.commit()
         cursor.close()
 
